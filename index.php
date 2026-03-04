@@ -22,4 +22,4 @@ $oeuvres = $requette->fetchAll(PDO::FETCH_ASSOC); // Récupération des oeuvres 
 </div>
 
 
-<?php require 'footer.php'; ?>
+<?php require 'footer.php'; ?> // Inclusion du pied de page
