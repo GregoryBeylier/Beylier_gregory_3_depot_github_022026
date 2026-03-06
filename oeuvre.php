@@ -1,6 +1,11 @@
 <?php
 require 'header.php';
-require 'oeuvres.php';
+require 'bdd.php';
+
+$pdo = connexion(); // Connexion à la base de données
+$requette = $pdo->query("SELECT * FROM oeuvres"); // Requête pour récupérer toutes les oeuvres
+$oeuvres = $requette->fetchAll(PDO::FETCH_ASSOC); // Récupération des oeuvres sous forme de tableau associatif
+
 
 // Si l'URL ne contient pas d'id, on redirige sur la page d'accueil
 if (empty($_GET['id'])) {
