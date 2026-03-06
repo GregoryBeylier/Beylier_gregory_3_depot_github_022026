@@ -2,30 +2,21 @@
 require 'header.php';
 require 'bdd.php';
 
-$pdo = connexion(); // Connexion à la base de données
-$requette = $pdo->query("SELECT * FROM oeuvres"); // Requête pour récupérer toutes les oeuvres
-$oeuvres = $requette->fetchAll(PDO::FETCH_ASSOC); // Récupération des oeuvres sous forme de tableau associatif
-
-
 // Si l'URL ne contient pas d'id, on redirige sur la page d'accueil
 if (empty($_GET['id'])) {
     header('Location: index.php');
+    exit();
 }
 
-$oeuvre = null;
-
-// On parcourt les oeuvres du tableau afin de rechercher celle qui a l'id précisé dans l'URL
-foreach ($oeuvres as $o) {
-    // intval permet de transformer l'id de l'URL en un nombre (exemple : "2" devient 2)
-    if ($o['id'] === intval($_GET['id'])) {
-        $oeuvre = $o;
-        break; // On stoppe le foreach si on a trouvé l'oeuvre
-    }
-}
+$pdo = connexion(); // Connexion à la base de données
+$requette = $pdo->prepare("SELECT * FROM oeuvres WHERE id = :id"); // Requête pour récupérer une oeuvre en fonction de son id
+$requette->execute([':id' => intval($_GET['id'])]); // Exécution de la requête en passant l'id de l'oeuvre à récupérer
+$oeuvre = $requette->fetch(PDO::FETCH_ASSOC); // Récupération de l'oeuvre sous forme de tableau associatif
 
 // Si aucune oeuvre trouvé, on redirige vers la page d'accueil
 if (is_null($oeuvre)) {
     header('Location: index.php');
+    exit();
 }
 ?>
 
