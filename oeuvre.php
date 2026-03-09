@@ -1,5 +1,4 @@
 <?php
-require 'header.php';
 require 'bdd.php';
 
 // Si l'URL ne contient pas d'id, on redirige sur la page d'accueil
@@ -9,15 +8,17 @@ if (empty($_GET['id'])) {
 }
 
 $pdo = connexion(); // Connexion à la base de données
-$requette = $pdo->prepare("SELECT * FROM oeuvres WHERE id = :id"); // Requête pour récupérer une oeuvre en fonction de son id
-$requette->execute([':id' => intval($_GET['id'])]); // Exécution de la requête en passant l'id de l'oeuvre à récupérer
-$oeuvre = $requette->fetch(PDO::FETCH_ASSOC); // Récupération de l'oeuvre sous forme de tableau associatif
+$requete = $pdo->prepare("SELECT * FROM oeuvres WHERE id = :id"); // Requête pour récupérer une oeuvre en fonction de son id
+$requete->execute([':id' => intval($_GET['id'])]); // Exécution de la requête en passant l'id de l'oeuvre à récupérer
+$oeuvre = $requete->fetch(PDO::FETCH_ASSOC); // Récupération de l'oeuvre sous forme de tableau associatif
 
 // Si aucune oeuvre trouvé, on redirige vers la page d'accueil
 if (is_null($oeuvre)) {
     header('Location: index.php');
     exit();
 }
+
+require 'header.php';
 ?>
 
 <article id="detail-oeuvre">

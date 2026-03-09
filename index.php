@@ -5,8 +5,8 @@ require 'bdd.php';
 
 <?php
 $pdo = connexion(); // Connexion à la base de données
-$requette = $pdo->query("SELECT * FROM oeuvres"); // Requête pour récupérer toutes les oeuvres
-$oeuvres = $requette->fetchAll(PDO::FETCH_ASSOC); // Récupération des oeuvres sous forme de tableau associatif
+$requete = $pdo->query("SELECT * FROM oeuvres"); // Requête pour récupérer toutes les oeuvres
+$oeuvres = $requete->fetchAll(PDO::FETCH_ASSOC); // Récupération des oeuvres sous forme de tableau associatif
 ?>
 
 <div id="liste-oeuvres">
