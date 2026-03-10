@@ -1,5 +1,7 @@
 <?php
 
+require 'bdd.php';
+
 //On sécurise TOUTES les données du formulaire dès le début
 $titre = isset($_POST['titre']) ? htmlspecialchars($_POST['titre']) : '';
 $artiste = isset($_POST['artiste']) ? htmlspecialchars($_POST['artiste']) : '';
@@ -33,3 +35,31 @@ if (!empty($erreur)) {
     echo '<p><a href="ajouter.php">Retour au formulaire</a></p>';
     exit();
 }
+
+?>
+
+<?php
+
+// insertion dans la base de données 
+
+
+// Connexion à la base de données
+$pdo = connexion();
+
+// Préparation de la requête d'insertion
+$requette = 'INSERT INTO oeuvres (titre, artiste, `description`, `image`) VALUES (:titre, :artiste, :description, :image)';
+
+// Exécution de la requête en passant les données du formulaire
+$requete = $pdo->prepare($requette);
+
+// On utilise un tableau associatif pour lier les paramètres de la requête aux variables du formulaire
+$requete->execute([
+    ':titre' => $titre,
+    ':artiste' => $artiste,
+    ':description' => $description,
+    ':image' => $image
+]);
+
+// Redirection vers la page d'accueil après l'insertion
+header('Location: oeuvre.php?id=' . $pdo->lastInsertId());
+exit();
